@@ -9,6 +9,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 //  Скрипти
 const formToFill = document.querySelector('.form');
 const inputToFill = document.querySelector('input[name="delay"]');
+const galleryOfPictures = document.querySelector('.gallery');
 
 const params = new URLSearchParams({
   key: '41859392-e5bc4a8d4ece805d6453ecbd7',
