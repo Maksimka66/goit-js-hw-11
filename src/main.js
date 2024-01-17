@@ -19,7 +19,7 @@ const params = new URLSearchParams({
 });
 
 // Запит на сервер
-const pictures = fetch(`<https://pixabay.com/api/>`, JSON.stringify(params))
+const pictures = fetch('<https://pixabay.com/api/>', JSON.stringify(params))
   .then(response => {
     if (!response.ok) {
       iziToast.error({
