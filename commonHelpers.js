@@ -26,5 +26,5 @@ import{S as f,i as a}from"./assets/vendor-46aac873.js";(function(){const r=docum
         <p>${u}</p>
         </div>
         </div>
-      </li>`).join(""),l.innerHTML=c,y.refresh(),o.target.reset()}).catch(i=>{console.log(i),a.error({title:"Sorry, there are no images matching your search query. Please try again!",position:"topRight"})})});function v(o){const r=new URLSearchParams({key:"41859392-e5bc4a8d4ece805d6453ecbd7",q:o,image_type:"photo",orientation:"horizontal",safesearch:!0});return fetch(`https://pixabay.com/api/?${r}`).then(i=>{if(!i.ok)throw new Error("Error fetching images");return i.json()})}
+      </li>`).join(""),l.innerHTML=c,y.refresh(),o.target.reset()}).catch(i=>{console.log(i),a.error({title:"Sorry, there are no images matching your search query. Please try again!",position:"topRight"})})});function v(o){const r=new URLSearchParams({key:"41859392-e5bc4a8d4ece805d6453ecbd7",q:o,image_type:"photo",orientation:"horizontal",safesearch:!0});return fetch(`https://pixabay.com/api/?${r}`).then(i=>{if(!i.ok||i.totalHits===0)throw new Error("Error fetching images");return i.json()})}
 //# sourceMappingURL=commonHelpers.js.map
