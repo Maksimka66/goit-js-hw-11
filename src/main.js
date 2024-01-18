@@ -10,6 +10,10 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const formToFill = document.querySelector('.form');
 const inputToFill = document.querySelector('input[name="delay"]');
 const galleryOfPictures = document.querySelector('.gallery');
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionDelay: 250,
+  captionsData: 'alt',
+});
 
 // Слухач форми
 formToFill.addEventListener('submit', event => {
@@ -22,8 +26,8 @@ formToFill.addEventListener('submit', event => {
     });
   }
   fetchImages(searchQuery)
-    .then(arr => {
-      const markup = arr
+    .then(({ hits }) => {
+      const markup = hits
         .map(
           ({
             webformatURL,
@@ -43,17 +47,33 @@ formToFill.addEventListener('submit', event => {
           width="360" 
           height="200"
         />
-        <p>Likes: ${likes}</p>
-        <p>Views: ${views}</p>
-        <p>Comments: ${comments}</p>
-        <p>Downloads: ${downloads}</p>
-      </a>
-    </li>`
+        </a>
+        <div class="container">
+        <div class="description">
+        <p class="info">Likes:</p>
+        <p>${likes}</p>
+        </div>
+        <div class="description">
+        <p class="info">Views:</p>
+        <p>${views}</p>
+        </div>
+        <div class="description">
+        <p class="info">Comments:</p>
+        <p>${comments}</p>
+        </div>
+        <div class="description">
+        <p class="info">Downloads:</p>
+        <p>${downloads}</p>
+        </div>
+        </div>
+      </li>`
         )
         .join('');
       galleryOfPictures.insertAdjacentHTML('beforeend', markup);
+      lightbox.refresh();
     })
-    .catch(error =>
+    .catch(
+      error => console.log(error),
       iziToast.error({
         title:
           'Sorry, there are no images matching your search query. Please try again!',
