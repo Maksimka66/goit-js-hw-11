@@ -10,6 +10,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const formToFill = document.querySelector('.form');
 const inputToFill = document.querySelector('input[name="delay"]');
 const galleryOfPictures = document.querySelector('.gallery');
+let markup = '';
 const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
   captionsData: 'alt',
@@ -27,7 +28,7 @@ formToFill.addEventListener('submit', event => {
   }
   fetchImages(searchQuery)
     .then(({ hits }) => {
-      const markup = hits
+      markup = hits
         .map(
           ({
             webformatURL,
@@ -69,17 +70,18 @@ formToFill.addEventListener('submit', event => {
       </li>`
         )
         .join('');
-      galleryOfPictures.insertAdjacentHTML('beforeend', markup);
+      galleryOfPictures.innerHTML = markup;
       lightbox.refresh();
+      event.target.reset();
     })
-    .catch(
-      error => console.log(error),
-      iziToast.error({
-        title:
-          'Sorry, there are no images matching your search query. Please try again!',
-        position: 'topRight',
-      })
-    );
+    .catch(error => {
+      console.log(error),
+        iziToast.error({
+          title:
+            'Sorry, there are no images matching your search query. Please try again!',
+          position: 'topRight',
+        });
+    });
 });
 
 // Набір параметрів
