@@ -40,6 +40,8 @@ formToFill.addEventListener('submit', event => {
           class="gallery-image"
           src="${webformatURL}"
           alt="${tags}"
+          width="360" 
+          height="200"
         />
         <p>Likes: ${likes}</p>
         <p>Views: ${views}</p>
