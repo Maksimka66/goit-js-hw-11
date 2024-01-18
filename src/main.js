@@ -11,6 +11,7 @@ const formToFill = document.querySelector('.form');
 const inputToFill = document.querySelector('input[name="delay"]');
 const galleryOfPictures = document.querySelector('.gallery');
 let markup = '';
+const loaderSpin = '<span class="loader"></span>';
 const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
   captionsData: 'alt',
@@ -19,6 +20,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
 // Слухач форми
 formToFill.addEventListener('submit', event => {
   event.preventDefault();
+  galleryOfPictures.innerHTML = loaderSpin;
   const searchQuery = inputToFill.value.trim();
   if (searchQuery === '') {
     iziToast.warning({
@@ -75,12 +77,12 @@ formToFill.addEventListener('submit', event => {
       event.target.reset();
     })
     .catch(error => {
-      console.log(error),
-        iziToast.error({
-          title:
-            'Sorry, there are no images matching your search query. Please try again!',
-          position: 'topRight',
-        });
+      console.log(error);
+      iziToast.error({
+        title:
+          'Sorry, there are no images matching your search query. Please try again!',
+        position: 'topRight',
+      });
     });
 });
 
