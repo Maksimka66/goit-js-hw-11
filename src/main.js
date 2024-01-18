@@ -98,7 +98,7 @@ function fetchImages(value) {
 
   // Запит на сервер
   return fetch(`https://pixabay.com/api/?${params}`).then(response => {
-    if (!response.ok) {
+    if (!response.ok || response.totalHits === 0) {
       throw new Error('Error fetching images');
     }
     return response.json();
