@@ -10,8 +10,8 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const formToFill = document.querySelector('.form');
 const inputToFill = document.querySelector('input[name="delay"]');
 const galleryOfPictures = document.querySelector('.gallery');
+const loader = document.querySelector('.loader');
 let markup = '';
-const loaderSpin = '<span class="loader"></span>';
 const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
   captionsData: 'alt',
@@ -20,16 +20,28 @@ const lightbox = new SimpleLightbox('.gallery a', {
 // Слухач форми
 formToFill.addEventListener('submit', event => {
   event.preventDefault();
-  galleryOfPictures.innerHTML = loaderSpin;
+  loader.style.display = 'block';
   const searchQuery = inputToFill.value.trim();
   if (searchQuery === '') {
     iziToast.warning({
       title: 'All fields must be filled!',
       position: 'topRight',
     });
+    loader.style.display = 'none';
+    return;
   }
   fetchImages(searchQuery)
     .then(({ hits }) => {
+      if (hits.length === 0) {
+        iziToast.error({
+          title:
+            'Sorry, there are no images matching your search query. Please try again!',
+          position: 'topRight',
+        });
+        loader.style.display = 'none';
+        galleryOfPictures.innerHTML = '';
+        return;
+      }
       markup = hits
         .map(
           ({
@@ -72,17 +84,15 @@ formToFill.addEventListener('submit', event => {
       </li>`
         )
         .join('');
+      loader.style.display = 'none';
       galleryOfPictures.innerHTML = markup;
       lightbox.refresh();
-      event.target.reset();
     })
     .catch(error => {
       console.log(error);
-      iziToast.error({
-        title:
-          'Sorry, there are no images matching your search query. Please try again!',
-        position: 'topRight',
-      });
+    })
+    .finally(() => {
+      event.target.reset();
     });
 });
 
@@ -98,7 +108,7 @@ function fetchImages(value) {
 
   // Запит на сервер
   return fetch(`https://pixabay.com/api/?${params}`).then(response => {
-    if (!response.ok || response.totalHits === 0) {
+    if (!response.ok) {
       throw new Error('Error fetching images');
     }
     return response.json();
