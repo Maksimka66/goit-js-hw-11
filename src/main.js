@@ -17,7 +17,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
 });
 
-// Дефолтне вимкнення кнопки 
+// Дефолтне вимкнення кнопки
 searchButton.setAttribute('disabled', true);
 
 // Слухач подій на полі вводу
@@ -36,7 +36,8 @@ searchForm.addEventListener('submit', event => {
   loader.style.display = 'block';
   if (searchQuery === '') {
     iziToast.warning({
-      title: 'All fields must be filled!',
+      title: 'Warning!',
+      message: 'All fields must be filled!',
       position: 'topRight',
     });
     galleryOfPictures.innerHTML = '';
