@@ -34,7 +34,7 @@ searchForm.addEventListener('submit', event => {
     iziToast.warning({
       title: 'Warning!',
       message: 'All fields must be filled!',
-      position: 'topRight',
+      position: 'center',
     });
     galleryOfPictures.innerHTML = '';
     loader.style.display = 'none';
@@ -45,10 +45,10 @@ searchForm.addEventListener('submit', event => {
     .then(({ hits }) => {
       if (hits.length === 0) {
         iziToast.error({
-          title: 'Error',
+          title: 'Error!',
           message:
             'Sorry, there are no images matching your search query. Please try again!',
-          position: 'topRight',
+          position: 'center',
         });
         galleryOfPictures.innerHTML = '';
         return;
@@ -104,6 +104,7 @@ searchForm.addEventListener('submit', event => {
     })
     .finally(() => {
       event.target.reset();
+      event.target.elements['submit'].setAttribute('disabled', true);
       loader.style.display = 'none';
     });
 });
