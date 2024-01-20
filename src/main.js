@@ -30,16 +30,6 @@ searchForm.addEventListener('submit', event => {
   event.preventDefault();
   let searchQuery = event.currentTarget.elements['delay'].value.trim();
   loader.style.display = 'block';
-  if (searchQuery === '') {
-    iziToast.warning({
-      title: 'Warning!',
-      message: 'All fields must be filled!',
-      position: 'center',
-    });
-    galleryOfPictures.innerHTML = '';
-    loader.style.display = 'none';
-    return;
-  }
 
   fetchImages(searchQuery)
     .then(({ hits }) => {
