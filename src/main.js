@@ -8,7 +8,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 //  Скрипти
 const searchForm = document.querySelector('.form');
-const searchButton = document.querySelector('.search');
 const galleryOfPictures = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
 let markup = '';
@@ -16,9 +15,6 @@ const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
   captionsData: 'alt',
 });
-
-// Дефолтне вимкнення кнопки
-searchButton.setAttribute('disabled', true);
 
 // Слухач подій на полі вводу
 searchForm.addEventListener('input', event => {
@@ -49,7 +45,8 @@ searchForm.addEventListener('submit', event => {
     .then(({ hits }) => {
       if (hits.length === 0) {
         iziToast.error({
-          title:
+          title: 'Error',
+          message:
             'Sorry, there are no images matching your search query. Please try again!',
           position: 'topRight',
         });
