@@ -18,12 +18,12 @@ const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
 });
 
+// Дефолтне вимкнення кнопки
 searchButton.setAttribute('disabled', true);
 
 // Слухач подій на полі вводу
-inputToFill.addEventListener('input', () => {
-  const isInputNotEmpty = inputToFill.value.trim();
-  if (isInputNotEmpty === '') {
+inputToFill.addEventListener('input', event => {
+  if (event.target.value.trim() === '') {
     searchButton.setAttribute('disabled', true);
   } else {
     searchButton.removeAttribute('disabled');
@@ -34,7 +34,6 @@ inputToFill.addEventListener('input', () => {
 formToFill.addEventListener('submit', event => {
   event.preventDefault();
   const searchQuery = inputToFill.value.trim();
-  loader.style.display = 'block';
   if (searchQuery === '') {
     iziToast.warning({
       title: 'All fields must be filled!',
@@ -42,6 +41,8 @@ formToFill.addEventListener('submit', event => {
     });
     loader.style.display = 'none';
     return;
+  } else {
+    loader.style.display = 'block';
   }
   fetchImages(searchQuery)
     .then(({ hits }) => {
