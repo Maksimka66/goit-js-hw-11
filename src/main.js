@@ -8,6 +8,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 //  Скрипти
 const formToFill = document.querySelector('.form');
+const searchButton = document.querySelector('.search');
 const inputToFill = document.querySelector('input[name="delay"]');
 const galleryOfPictures = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
@@ -17,11 +18,23 @@ const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
 });
 
+searchButton.setAttribute('disabled', true);
+
+// Слухач подій на полі вводу
+inputToFill.addEventListener('input', () => {
+  const isInputNotEmpty = inputToFill.value.trim();
+  if (isInputNotEmpty === '') {
+    searchButton.setAttribute('disabled', true);
+  } else {
+    searchButton.removeAttribute('disabled');
+  }
+});
+
 // Слухач форми
 formToFill.addEventListener('submit', event => {
   event.preventDefault();
-  loader.style.display = 'block';
   const searchQuery = inputToFill.value.trim();
+  loader.style.display = 'block';
   if (searchQuery === '') {
     iziToast.warning({
       title: 'All fields must be filled!',
