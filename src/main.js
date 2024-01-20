@@ -7,9 +7,8 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 //  Скрипти
-const formToFill = document.querySelector('.form');
+const searchForm = document.querySelector('.form');
 const searchButton = document.querySelector('.search');
-const inputToFill = document.querySelector('input[name="delay"]');
 const galleryOfPictures = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
 let markup = '';
@@ -18,32 +17,33 @@ const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
 });
 
-// Дефолтне вимкнення кнопки
+// Дефолтне вимкнення кнопки 
 searchButton.setAttribute('disabled', true);
 
 // Слухач подій на полі вводу
-inputToFill.addEventListener('input', event => {
+searchForm.addEventListener('input', event => {
   if (event.target.value.trim() === '') {
-    searchButton.setAttribute('disabled', true);
+    event.currentTarget.elements['submit'].setAttribute('disabled', true);
   } else {
-    searchButton.removeAttribute('disabled');
+    event.currentTarget.elements['submit'].removeAttribute('disabled');
   }
 });
 
 // Слухач форми
-formToFill.addEventListener('submit', event => {
+searchForm.addEventListener('submit', event => {
   event.preventDefault();
-  const searchQuery = inputToFill.value.trim();
+  let searchQuery = event.currentTarget.elements['delay'].value.trim();
+  loader.style.display = 'block';
   if (searchQuery === '') {
     iziToast.warning({
       title: 'All fields must be filled!',
       position: 'topRight',
     });
+    galleryOfPictures.innerHTML = '';
     loader.style.display = 'none';
     return;
-  } else {
-    loader.style.display = 'block';
   }
+
   fetchImages(searchQuery)
     .then(({ hits }) => {
       if (hits.length === 0) {
@@ -52,7 +52,6 @@ formToFill.addEventListener('submit', event => {
             'Sorry, there are no images matching your search query. Please try again!',
           position: 'topRight',
         });
-        loader.style.display = 'none';
         galleryOfPictures.innerHTML = '';
         return;
       }
@@ -107,6 +106,7 @@ formToFill.addEventListener('submit', event => {
     })
     .finally(() => {
       event.target.reset();
+      loader.style.display = 'none';
     });
 });
 
