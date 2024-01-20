@@ -10,25 +10,25 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const searchForm = document.querySelector('.form');
 const galleryOfPictures = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
-let markup = '';
 const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
   captionsData: 'alt',
 });
 
-// Слухач подій на полі вводу
-searchForm.addEventListener('input', event => {
-  if (event.target.value.trim() === '') {
-    event.currentTarget.elements['submit'].setAttribute('disabled', true);
-  } else {
-    event.currentTarget.elements['submit'].removeAttribute('disabled');
-  }
-});
-
 // Слухач форми
 searchForm.addEventListener('submit', event => {
   event.preventDefault();
-  let searchQuery = event.currentTarget.elements['delay'].value.trim();
+  galleryOfPictures.innerHTML = '';
+  const searchQuery = event.currentTarget.elements.delay.value.trim();
+  if (searchQuery === '') {
+    iziToast.warning({
+      title: 'Warning!',
+      message: 'All fileds must be filled!',
+      position: 'topRight',
+    });
+    galleryOfPictures.innerHTML = '';
+    return;
+  }
   loader.style.display = 'block';
 
   fetchImages(searchQuery)
@@ -38,12 +38,12 @@ searchForm.addEventListener('submit', event => {
           title: 'Error!',
           message:
             'Sorry, there are no images matching your search query. Please try again!',
-          position: 'center',
+          position: 'topRight',
         });
         galleryOfPictures.innerHTML = '';
         return;
       }
-      markup = hits
+      let markup = hits
         .map(
           ({
             webformatURL,
@@ -91,10 +91,15 @@ searchForm.addEventListener('submit', event => {
     })
     .catch(error => {
       console.log(error);
+      iziToast.error({
+        title: 'Error!',
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
+        position: 'topRight',
+      });
     })
     .finally(() => {
       event.target.reset();
-      event.target.elements['submit'].setAttribute('disabled', true);
       loader.style.display = 'none';
     });
 });
