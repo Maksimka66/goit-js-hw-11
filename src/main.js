@@ -19,6 +19,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
 searchForm.addEventListener('submit', event => {
   event.preventDefault();
   galleryOfPictures.innerHTML = '';
+  loader.style.display = 'block';
   const searchQuery = event.currentTarget.elements.delay.value.trim();
   if (searchQuery === '') {
     iziToast.warning({
@@ -29,7 +30,6 @@ searchForm.addEventListener('submit', event => {
     galleryOfPictures.innerHTML = '';
     return;
   }
-  loader.style.display = 'block';
 
   fetchImages(searchQuery)
     .then(({ hits }) => {
